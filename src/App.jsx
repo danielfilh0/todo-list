@@ -1,10 +1,12 @@
 import React from "react";
+import TodoList from "./components/TodoList";
 
 const App = () => {
     const [task, setTask] = React.useState("");
     const [taskList, setTaskList] = React.useState([]);
     const [completedTaskList, setCompletedTaskList] = React.useState([]);
     const [activeTaskList, setActiveTaskList] = React.useState([]);
+    const [todoListType, setTodoListType] = React.useState("all");
 
     function addTask(event) {
         event.preventDefault();
@@ -21,7 +23,7 @@ const App = () => {
 
     function completeTask(event, id) {
         event.preventDefault();
-        const element = taskList.findIndex(elem => elem.id === id);
+        const element = taskList.findIndex((elem) => elem.id === id);
 
         const newTaskList = [...taskList];
 
@@ -29,12 +31,12 @@ const App = () => {
             newTaskList[element] = {
                 ...newTaskList[element],
                 isCompleted: true,
-            }
+            };
         } else {
             newTaskList[element] = {
                 ...newTaskList[element],
                 isCompleted: false,
-            }
+            };
         }
 
         setTaskList(newTaskList);
@@ -60,86 +62,66 @@ const App = () => {
 
         getCompletedList();
         getActiveList();
-
     }, [taskList]);
 
     return (
         <main className="todo-list container">
             <h1 className="todo__title">#todo</h1>
+
             <section className="todo__wrapper">
                 <nav className="todo__nav">
                     <ul>
-                        <li>All</li>
-                        <li>Active</li>
-                        <li>Completed</li>
+                        <li className={todoListType === 'all' ? 'is-active' : null} onClick={() => setTodoListType("all")}>All</li>
+                        <li className={todoListType === 'active' ? 'is-active' : null} onClick={() => setTodoListType("active")}>
+                            Active
+                        </li>
+                        <li className={todoListType === 'completed' ? 'is-active' : null} onClick={() => setTodoListType("completed")}>
+                            Completed
+                        </li>
                     </ul>
                 </nav>
+
                 <div className="todo__container">
-                    <form className="todo__form" onSubmit={addTask}>
-                        <input
-                            type="text"
-                            name="new-task"
-                            id="new-task"
-                            placeholder="add details"
-                            value={task}
-                            onChange={(event) => setTask(event.target.value)}
-                        />
-                        <button type="submit">Add</button>
-                    </form>
-                    {taskList === [] ? null : (
-                        <div className="todo__list">
-                            <p>All</p>
-                            {taskList.map((task, index) => (
-                                <div key={index}>
-                                    <span>{task.value}</span>
-                                    <button
-                                        onClick={(event) =>
-                                            deleteTask(event, task.id)
-                                        }
-                                    >
-                                        Delete
-                                    </button>
-                                    <button onClick={(event) => completeTask(event, task.id)}>Complete</button>
-                                </div>
-                            ))}
-
-                            <hr />
-                            <p>Completed</p>
-                            {completedTaskList.map((task, index) => (
-                                <div key={index}>
-                                    <span>
-                                        {task.value}
-                                    </span>
-                                    <button
-                                        onClick={(event) =>
-                                            deleteTask(event, task.id)
-                                        }
-                                    >
-                                        Delete
-                                    </button>
-                                    <button onClick={(event) => completeTask(event, task.id)}>Complete</button>
-                                </div>
-                            ))}
-
-                                <hr />
-                            <p>Active</p>
-                            {activeTaskList.map((task, index) => (
-                                <div key={index}>
-                                    <span>
-                                        {task.value}
-                                        <button
-                                        onClick={(event) =>
-                                            deleteTask(event, task.id)
-                                        }
-                                    >
-                                        Delete
-                                    </button>
-                                    <button onClick={(event) => completeTask(event, task.id)}>Complete</button>
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
+                    {todoListType === "completed" ? null : (
+                        <form className="todo__form" onSubmit={addTask}>
+                            <input
+                                type="text"
+                                name="new-task"
+                                id="new-task"
+                                placeholder="add details"
+                                value={task}
+                                onChange={(event) =>
+                                    setTask(event.target.value)
+                                }
+                            />
+                            <button type="submit">Add</button>
+                        </form>
                     )}
+
+                    <div className="todo__list">
+                        {todoListType === "all" ? (
+                            <TodoList
+                                taskList={taskList}
+                                completeTask={completeTask}
+                            />
+                        ) : null}
+
+                        {todoListType === "active" ? (
+                            <TodoList
+                                taskList={activeTaskList}
+                                completeTask={completeTask}
+                            />
+                        ) : null}
+
+                        {todoListType === "completed" ? (
+                            <TodoList
+                                taskList={completedTaskList}
+                                setTaskList={setTaskList}
+                                completeTask={completeTask}
+                                deleteTask={deleteTask}
+                            />
+                        ) : null}
+                    </div>
                 </div>
             </section>
         </main>
