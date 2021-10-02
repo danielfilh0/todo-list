@@ -65,6 +65,7 @@ const App = () => {
     }, [taskList]);
 
     return (
+        <>
         <main className="todo-list container">
             <h1 className="todo__title">#todo</h1>
 
@@ -125,6 +126,10 @@ const App = () => {
                 </div>
             </section>
         </main>
+        <footer className="container">
+                <p>created by <a href="https://github.com/danielfilh0" rel="noreferrer" target="_blank" title="Daniel Filho">danielfilh0</a> - devChallenges.io</p>
+            </footer>
+        </>
     );
 };
 

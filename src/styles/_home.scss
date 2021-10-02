@@ -1,5 +1,7 @@
 .todo-list {
     padding-top: 2rem;
+    display: grid;
+    grid-template-rows: auto auto 100%;
 
     .todo__title {
         margin-bottom: 3.5rem;
@@ -218,5 +220,22 @@
         span {
             font-weight: 500;
         }
+    }
+}
+
+footer {
+    position: absolute;
+    bottom: 1rem;
+    left: 40%;
+
+    p {
+        color: $color-gray-footer;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    a {
+        color: inherit;
+        font-weight: 700;
     }
 }
