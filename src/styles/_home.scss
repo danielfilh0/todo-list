@@ -1,7 +1,13 @@
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 1.5rem;
+}
+
 .todo-list {
     padding-top: 2rem;
-    display: grid;
-    grid-template-rows: auto auto 100%;
 
     .todo__title {
         margin-bottom: 3.5rem;
@@ -23,7 +29,10 @@
             width: inherit;
             display: flex;
             justify-content: space-between;
-            padding: 0 3rem 0 3rem;
+
+            @include breakpoint(phone) {
+                padding: 0 3rem 0 3rem;
+            }
 
             li {
                 padding-bottom: 1rem;
@@ -58,15 +67,19 @@
         margin-bottom: 2rem;
 
         input {
+            width: 65%;
             padding-left: 0.5rem;
             height: inherit;
             border: 1px solid $color-gray;
             border-radius: 0.75rem;
             max-width: 30rem;
-            width: 75%;
             outline: none;
             transition: 0.2s;
             font-size: 0.875rem;
+
+            @include breakpoint(phone) {
+                width: 75%;
+            }
 
             &:focus,
             &:hover {
@@ -94,9 +107,14 @@
         }
     }
 
+    .todo__list {
+        margin-bottom: 5rem;
+    }
+
     .todo__task {
-        display: flex;
-        align-items: center;
+        display: grid;
+        max-width: 100%;
+        grid-template-columns: 1.5rem 100%;
         position: relative;
 
         &:last-of-type {
@@ -110,6 +128,7 @@
         }
 
         .checkbox {
+            display: inline-block;
             width: 1.5rem;
             height: 1.5rem;
             border-radius: 4px;
@@ -121,6 +140,8 @@
         }
 
         span {
+            max-width: 100%;
+            word-break: break-word;
             color: $color-dark-strong;
             font-weight: 500;
             font-size: 1.125rem;
@@ -148,6 +169,8 @@
             }
 
             span {
+                width: max-content;
+                word-wrap: break-word;
                 color: $color-dark;
 
                 &::after {
@@ -224,9 +247,8 @@
 }
 
 footer {
-    position: absolute;
-    bottom: 1rem;
-    left: 40%;
+    display: flex;
+    justify-content: center;
 
     p {
         color: $color-gray-footer;

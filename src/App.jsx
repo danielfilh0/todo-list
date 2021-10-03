@@ -21,9 +21,20 @@ const App = () => {
         }
     }
 
+    function handleInput({ target }) {
+        const maximumLimitChar = 29;
+        if (target.value.length <= maximumLimitChar) {
+            setTask(target.value);
+        } else {
+            alert(`Maximum character limit: ${maximumLimitChar}`);
+        }
+    }
+
     function addTask(event) {
         event.preventDefault();
-        if (task !== "") {
+        if (task === '') {
+            alert('Enter some task');
+        } else {
             const taskDetails = {
                 id: Math.floor(Math.random() * 1000),
                 value: task,
@@ -120,9 +131,7 @@ const App = () => {
                                 id="new-task"
                                 placeholder="add details"
                                 value={task}
-                                onChange={(event) =>
-                                    setTask(event.target.value)
-                                }
+                                onChange={handleInput}
                             />
                             <button type="submit">Add</button>
                         </form>
