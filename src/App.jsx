@@ -8,6 +8,19 @@ const App = () => {
     const [activeTaskList, setActiveTaskList] = React.useState([]);
     const [todoListType, setTodoListType] = React.useState("all");
 
+    function addStorage(value) {
+        localStorage.setItem('tasklist', JSON.stringify(value));
+    }
+
+    function getStorage() {
+        let localStorageTasks = localStorage.getItem('tasklist');
+
+        if (localStorageTasks) {
+            const localStorageTasks = JSON.parse(localStorage.getItem('tasklist'));
+            setTaskList(localStorageTasks);
+        }
+    }
+
     function addTask(event) {
         event.preventDefault();
         if (task !== "") {
@@ -16,7 +29,9 @@ const App = () => {
                 value: task,
                 isCompleted: false,
             };
-            setTaskList([...taskList, taskDetails]);
+            const updatedTasks = [...taskList, taskDetails];
+            setTaskList(updatedTasks);
+            addStorage(updatedTasks);
             setTask("");
         }
     }
@@ -40,11 +55,20 @@ const App = () => {
         }
 
         setTaskList(newTaskList);
+        addStorage(newTaskList);
     }
 
     function deleteTask(event, id) {
         event.preventDefault();
-        setTaskList(taskList.filter((item) => item.id !== id));
+        const updatedTasks = taskList.filter((item) => item.id !== id);
+        setTaskList(updatedTasks);
+        addStorage(updatedTasks);
+    }
+
+    function deleteAllTasks() {
+        const tasks = [];
+        setTaskList(tasks);
+        addStorage(tasks);
     }
 
     React.useEffect(() => {
@@ -62,7 +86,12 @@ const App = () => {
 
         getCompletedList();
         getActiveList();
+
     }, [taskList]);
+
+    React.useEffect(() => {
+        getStorage();
+    }, [])
 
     return (
         <>
@@ -120,6 +149,7 @@ const App = () => {
                                 setTaskList={setTaskList}
                                 completeTask={completeTask}
                                 deleteTask={deleteTask}
+                                deleteAllTasks={deleteAllTasks}
                             />
                         ) : null}
                     </div>

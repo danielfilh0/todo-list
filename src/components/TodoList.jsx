@@ -1,6 +1,6 @@
 import React from "react";
 
-const TodoList = ({ taskList, setTaskList, completeTask, deleteTask }) => {
+const TodoList = ({ taskList, setTaskList, completeTask, deleteTask, deleteAllTasks }) => {
     if (taskList === []) return <p>Nothing yet =(</p>;
     return (
         <>
@@ -34,7 +34,7 @@ const TodoList = ({ taskList, setTaskList, completeTask, deleteTask }) => {
             {deleteTask && (taskList.length > 0) ? (
                 <button
                     className="delete-all"
-                    onClick={() => setTaskList([])}
+                    onClick={deleteAllTasks}
                 >
                     <i class="far fa-trash-alt"></i>
                     <span>delete all</span>
